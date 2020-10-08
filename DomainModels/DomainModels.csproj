@@ -45,7 +45,6 @@
     <Compile Include="Deal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Store.cs" />
-    <Compile Include="StoreUser.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Vehicle.cs" />
   </ItemGroup>
