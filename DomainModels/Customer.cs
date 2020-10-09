@@ -8,7 +8,7 @@ namespace DomainModels
 {
     public class Customer
     {
-        public int ID { get; set; }
+        public int ID { get; }
 
         public int UserID { get; set; }
 

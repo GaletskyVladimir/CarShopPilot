@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CarShopPilot.Filters;
+using CarShopPilot.Util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -9,7 +11,9 @@ namespace CarShopPilot
     {
         public static void Register(HttpConfiguration config)
         {
+            Bootstrapper.Run();
             config.MapHttpAttributeRoutes();
+            config.Filters.Add(new LogExceptionFilterAttribute());
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

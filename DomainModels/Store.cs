@@ -8,7 +8,7 @@ namespace DomainModels
 {
     public class Store
     {
-		public int ID { get; set; }
+		public int ID { get; }
 
 		public string Name { get; set; } = string.Empty;
 

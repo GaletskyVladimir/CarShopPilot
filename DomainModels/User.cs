@@ -8,9 +8,12 @@ namespace DomainModels
 {
     public class User
     {
-        public int ID { get; set; }
+        public User(int id)
+        {
+            this.ID = id;
+        }
 
-        public string GUID { get; set; } = string.Empty;
+        public int ID { get; }
 
         public int StoreID { get; set; }
 
@@ -20,6 +23,6 @@ namespace DomainModels
 
         public string LastName { get; set; } = string.Empty;
 
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
     }
 }

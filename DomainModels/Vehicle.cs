@@ -8,7 +8,7 @@ namespace DomainModels
 {
     public class Vehicle
     {
-        public int ID { get; set; }
+        public int ID { get; }
 
         public int StoreID { get; set; }
 

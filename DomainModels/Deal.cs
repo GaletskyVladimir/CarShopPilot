@@ -8,7 +8,7 @@ namespace DomainModels
 {
     public class Deal
     {
-        public int ID { get; set; }
+        public int ID { get; }
 
         public string GUID { get; set; } = string.Empty;
 
