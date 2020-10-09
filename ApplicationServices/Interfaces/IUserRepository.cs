@@ -9,7 +9,7 @@ namespace ApplicationServices.Interfaces
 {
     public interface IUserRepository
     {
-        List<User> GetAll();
+        IEnumerable<User> GetAll();
 
         User GetById(int userId);
 
@@ -18,5 +18,9 @@ namespace ApplicationServices.Interfaces
         User ModifyUser(User user);
 
         void RemoveUser(int userId);
+
+        bool UpdateActivity(int userId, bool isActive);
+
+        IEnumerable<User> GetStoreUsers(int storeId);
     }
 }

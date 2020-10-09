@@ -24,7 +24,7 @@ namespace ApplicationServices.Repositories
             }
         }
 
-        public List<User> GetAll()
+        public IEnumerable<User> GetAll()
         {
             return UserContainer.GetAll();
         }
@@ -42,6 +42,19 @@ namespace ApplicationServices.Repositories
         public void RemoveUser(int userId)
         {
             UserContainer.RemoveUser(userId);
+        }
+
+        public bool UpdateActivity(int userId, bool isActive)
+        {
+            var user = GetById(userId);
+            user.IsActive = isActive;
+            ModifyUser(user);
+            return isActive;
+        }
+
+        public IEnumerable<User> GetStoreUsers(int storeId)
+        {
+            return UserContainer.GetStoreUsers(storeId);
         }
     }
 }

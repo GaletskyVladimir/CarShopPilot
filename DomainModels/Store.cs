@@ -8,6 +8,16 @@ namespace DomainModels
 {
     public class Store
     {
+        public Store()
+        {
+
+        }
+
+        public Store(int storeId)
+        {
+			this.ID = storeId;
+        }
+
 		public int ID { get; }
 
 		public string Name { get; set; } = string.Empty;
@@ -18,16 +28,10 @@ namespace DomainModels
 
 		public string State { get; set; } = string.Empty;
 
-		public string Zip { get; set; } = string.Empty;
-
 		public string Email { get; set; } = string.Empty;
 
 		public string Phone { get; set; } = string.Empty;
 
-		public DateTime DateCreated { get; set; } = DateTime.MinValue;
-
-		public DateTime DateModified { get; set; } = DateTime.MinValue;
-
-		public bool IsDeleted { get; set; }
+		public DateTime DateCreated { get; } = DateTime.Now;
 	}
 }

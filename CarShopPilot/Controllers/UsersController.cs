@@ -1,4 +1,5 @@
 ﻿using ApplicationServices.Interfaces;
+using ApplicationServices.Models;
 using ApplicationServices.Services;
 using System;
 using System.Collections.Generic;
@@ -14,9 +15,12 @@ namespace CarShopPilot.Controllers
     {
         private readonly UserService userService;
 
-        public UsersController(IUserRepository userRepository)
+        private readonly IStoreRepository storeRepository;
+
+        public UsersController(IUserRepository userRepository, IStoreRepository storeRepository)
         {
-            userService = new UserService(userRepository);
+            this.userService = new UserService(userRepository);
+            this.storeRepository = storeRepository;
         }
 
         [HttpGet, Route("")]
@@ -39,21 +43,74 @@ namespace CarShopPilot.Controllers
         }
 
 		[HttpPost, Route("")]
-		public IHttpActionResult CreateUser()
+		public IHttpActionResult CreateUser([FromBody]UserSummary userSummary)
 		{
-            return null;
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            if (!storeRepository.DoesStoreExists(userSummary.StoreID))
+            {
+                return BadRequest($"Store with id {userSummary.StoreID} does not exists");
+            }
+            return Ok(userService.CreateUser(userSummary));
 		}
 
-        [HttpPut, Route("")]
-        public IHttpActionResult UpdateUser()
+        [HttpPut, Route("{userId}")]
+        public IHttpActionResult UpdateUser([FromUri] int userId, [FromBody] UserSummary userSummary)
         {
-            return null;
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+                if (!storeRepository.DoesStoreExists(userSummary.StoreID))
+                {
+                    return BadRequest($"Store with id {userSummary.StoreID} does not exists");
+                }
+                return Ok(userService.EditUser(userSummary, userId));
+            }
+            catch (InvalidOperationException)
+            {
+                return BadRequest($"User with id {userId} does not exists");
+            }
         }
 
-        [HttpDelete, Route("userId")]
-        public IHttpActionResult DeleteUser()
+        [HttpDelete, Route("{userId}")]
+        public IHttpActionResult DeleteUser(int userId)
         {
-            return null;
+            try
+            {
+                userService.RemoveUser(userId);
+                return Ok("Successfully removed");
+            }
+            catch (InvalidOperationException)
+            {
+                return BadRequest($"User with id {userId} does not exists");
+            }
+        }
+
+        [HttpPatch, Route("{userId}/activity/{isActive}")]
+        public IHttpActionResult ChangeUserActivityStatus(int userId, bool isActive)
+        {
+            try
+            {
+                return Ok(userService.UpdateUserActivity(userId, isActive));
+            }
+            catch (InvalidOperationException)
+            {
+                return BadRequest($"User with id {userId} does not exists");
+            }
+        }
+
+        [HttpGet, Route("{storeId}/storeusers")]
+        public IHttpActionResult GetUsersByStoreId(int storeId)
+        {
+            try
+            {
+                return Ok(userService.GetStoreUsers(storeId));
+            }
+            catch (InvalidOperationException)
+            {
+                return BadRequest($"Store with id {storeId} does not exists");
+            }
         }
     }
 }

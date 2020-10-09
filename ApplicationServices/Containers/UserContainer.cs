@@ -14,23 +14,8 @@ namespace ApplicationServices.Containers
             initUsers();
         }
 
-        private static void initUsers()
-        {
-            users = new List<User>();
-
-            var user1 = new User(currentPrimaryId)
-            {
-                Email = "test@test.com",
-                FirstName = "Dan",
-                LastName = "Nouer",
-                IsActive = true,
-                StoreID = 1
-            };
-
-            users.Add(user1);
-        }
-
-        public static List<User> GetAll() => users;
+        //todo: optional pagination
+        public static IEnumerable<User> GetAll() => users;
 
         public static User GetById(int userId)
         {
@@ -61,7 +46,7 @@ namespace ApplicationServices.Containers
             updatingUser.Email = user.Email;
             updatingUser.FirstName = user.FirstName;
             updatingUser.LastName = user.LastName;
-            updatingUser.IsActive = true;
+            updatingUser.IsActive = user.IsActive;
             return updatingUser;
         }
 
@@ -69,6 +54,61 @@ namespace ApplicationServices.Containers
         {
             var removingUser = users.First(x => x.ID == userId);
             users.Remove(removingUser);
+        }
+
+        public static IEnumerable<User> GetStoreUsers(int storeId)
+        {
+            return users.Where(x => x.StoreID == storeId);
+        }
+
+        private static void initUsers()
+        {
+            users = new List<User>();
+
+            users.AddRange(
+                new List<User>() {
+                    new User(currentPrimaryId++)
+                    {
+                        Email = "test@test.com",
+                        FirstName = "Dan",
+                        LastName = "Nouer",
+                        IsActive = true,
+                        StoreID = 1
+                    },
+                    new User(currentPrimaryId++)
+                    {
+                        Email = "nick@gmail.com",
+                        FirstName = "Nick",
+                        LastName = "Johnson",
+                        IsActive = true,
+                        StoreID = 1
+                    },
+                    new User(currentPrimaryId++)
+                    {
+                        Email = "Fred@mail.com",
+                        FirstName = "Fred",
+                        LastName = "Trump",
+                        IsActive = true,
+                        StoreID = 1
+                    },
+                    new User(currentPrimaryId++)
+                    {
+                        Email = "vasya@gmail.com",
+                        FirstName = "Vasya",
+                        LastName = "Petrov",
+                        IsActive = true,
+                        StoreID = 1
+                    },
+                    new User(currentPrimaryId++)
+                    {
+                        Email = "test5@gmail.com",
+                        FirstName = "Luke",
+                        LastName = "Zurge",
+                        IsActive = true,
+                        StoreID = 2
+                    }
+                }
+                );
         }
     }
 }

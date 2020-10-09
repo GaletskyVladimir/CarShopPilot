@@ -8,6 +8,16 @@ namespace DomainModels
 {
     public class Vehicle
     {
+        public Vehicle()
+        {
+
+        }
+
+        public Vehicle(int vehicleId)
+        {
+            this.ID = vehicleId;
+        }
+
         public int ID { get; }
 
         public int StoreID { get; set; }

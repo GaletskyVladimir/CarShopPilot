@@ -8,6 +8,16 @@ namespace DomainModels
 {
     public class Customer
     {
+        public Customer()
+        {
+
+        }
+
+        public Customer(int customerId)
+        {
+            this.ID = customerId;
+        }
+
         public int ID { get; }
 
         public int UserID { get; set; }
