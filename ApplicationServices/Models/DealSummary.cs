@@ -18,9 +18,5 @@ namespace ApplicationServices.Models
 
         [Required(ErrorMessage = "Please, Enter Vehicle")]
         public int VehicleId { get; set; }
-
-        public DealStatus DealStatus { get; set; }
-
-        public bool IsDelivered { get; set; }
     }
 }

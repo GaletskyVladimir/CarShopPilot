@@ -15,12 +15,12 @@ namespace CarShopPilot.Controllers
     {
         private readonly UserService userService;
 
-        private readonly IStoreRepository storeRepository;
+        private readonly StoreService storeService;
 
         public UsersController(IUserRepository userRepository, IStoreRepository storeRepository)
         {
             this.userService = new UserService(userRepository);
-            this.storeRepository = storeRepository;
+            this.storeService = new StoreService(storeRepository);
         }
 
         [HttpGet, Route("")]
@@ -47,7 +47,7 @@ namespace CarShopPilot.Controllers
 		{
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            if (!storeRepository.DoesStoreExists(userSummary.StoreID))
+            if (!storeService.DoesStoreExists(userSummary.StoreID))
             {
                 return BadRequest($"Store with id {userSummary.StoreID} does not exists");
             }
@@ -61,7 +61,7 @@ namespace CarShopPilot.Controllers
             {
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
-                if (!storeRepository.DoesStoreExists(userSummary.StoreID))
+                if (!storeService.DoesStoreExists(userSummary.StoreID))
                 {
                     return BadRequest($"Store with id {userSummary.StoreID} does not exists");
                 }

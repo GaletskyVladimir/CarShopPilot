@@ -59,5 +59,10 @@ namespace ApplicationServices.Services
         {
             storeRepository.RemoveStore(storeId);
         }
+
+        public bool DoesStoreExists(int storeId)
+        {
+            return storeRepository.DoesStoreExists(storeId);
+        }
     }
 }

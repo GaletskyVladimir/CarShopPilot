@@ -15,16 +15,20 @@ namespace CarShopPilot.Controllers
     {
         private readonly CustomerService customerService;
 
-        private readonly IStoreRepository storeRepository;
+        private readonly StoreService storeService;
 
-        private readonly IUserRepository userRepository;
+        private readonly UserService userSerivce;
 
         public CustomersController(ICustomerRepository customerRepo, IStoreRepository storeRepository, IUserRepository userRepository)
         {
             this.customerService = new CustomerService(customerRepo);
-            this.storeRepository = storeRepository;
-            this.userRepository = userRepository;
+            this.storeService = new StoreService(storeRepository);
+            this.userSerivce = new UserService(userRepository);
         }
+
+        //Count
+        //PageCount
+        //Pagination with Wrapper
 
         [HttpGet, Route("")]
         public IHttpActionResult GetCustomer()
@@ -50,11 +54,11 @@ namespace CarShopPilot.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            if (!storeRepository.DoesStoreExists(customerSummary.StoreID))
+            if (!storeService.DoesStoreExists(customerSummary.StoreID))
             {
                 return BadRequest($"Store with id {customerSummary.StoreID} does not exists");
             }
-            if (!userRepository.DoesUserExists(customerSummary.UserID))
+            if (!userSerivce.DoesUserExists(customerSummary.UserID))
             {
                 return BadRequest($"User with id {customerSummary.UserID} does not exists");
             }
@@ -70,11 +74,11 @@ namespace CarShopPilot.Controllers
                 //Is user valid
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
-                if (!storeRepository.DoesStoreExists(customerSummary.StoreID))
+                if (!storeService.DoesStoreExists(customerSummary.StoreID))
                 {
                     return BadRequest($"Store with id {customerSummary.StoreID} does not exists");
                 }
-                if (!userRepository.DoesUserExists(customerSummary.UserID))
+                if (!userSerivce.DoesUserExists(customerSummary.UserID))
                 {
                     return BadRequest($"User with id {customerSummary.UserID} does not exists");
                 }

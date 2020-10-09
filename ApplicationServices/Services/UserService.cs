@@ -68,5 +68,10 @@ namespace ApplicationServices.Services
             //store validation
             return userRepository.GetStoreUsers(storeId);
         }
+
+        public bool DoesUserExists(int userId)
+        {
+            return userRepository.DoesUserExists(userId);
+        }
     }
 }
