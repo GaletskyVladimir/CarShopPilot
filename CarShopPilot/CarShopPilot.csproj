@@ -158,6 +158,7 @@
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\VehiclesController.cs" />
     <Compile Include="Filters\LogExceptionFilterAttribute.cs" />
+    <Compile Include="Filters\LogWebRequestsAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -184,6 +185,10 @@
     <ProjectReference Include="..\DomainModels\DomainModels.csproj">
       <Project>{2c3d953c-fa75-4d6f-af92-68d9b460a917}</Project>
       <Name>DomainModels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Workshop\Workshop.csproj">
+      <Project>{4FF80A5D-9267-4D85-9A1A-193F02687BDA}</Project>
+      <Name>Workshop</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

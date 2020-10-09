@@ -14,6 +14,7 @@ namespace CarShopPilot
             Bootstrapper.Run();
             config.MapHttpAttributeRoutes();
             config.Filters.Add(new LogExceptionFilterAttribute());
+            config.Filters.Add(new LogWebRequestsAttribute());
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
