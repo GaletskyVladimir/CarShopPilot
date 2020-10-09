@@ -1,4 +1,7 @@
-﻿using System;
+﻿using ApplicationServices.Interfaces;
+using ApplicationServices.Models;
+using ApplicationServices.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -10,5 +13,117 @@ namespace CarShopPilot.Controllers
     [RoutePrefix("api/customers")]
     public class CustomersController : ApiController
     {
+        private readonly CustomerService customerService;
+
+        private readonly IStoreRepository storeRepository;
+
+        private readonly IUserRepository userRepository;
+
+        public CustomersController(ICustomerRepository customerRepo, IStoreRepository storeRepository, IUserRepository userRepository)
+        {
+            this.customerService = new CustomerService(customerRepo);
+            this.storeRepository = storeRepository;
+            this.userRepository = userRepository;
+        }
+
+        [HttpGet, Route("")]
+        public IHttpActionResult GetCustomer()
+        {
+            return Ok(customerService.GetAllCustomers());
+        }
+
+        [HttpGet, Route("{customerId}")]
+        public IHttpActionResult GetCustomerById(int customerId)
+        {
+            try
+            {
+                return Ok(customerService.GetCustomerById(customerId));
+            }
+            catch (InvalidOperationException)
+            {
+                return BadRequest($"Customer with id {customerId} does not exists");
+            }
+        }
+
+        [HttpPost, Route("")]
+        public IHttpActionResult CreateCustomer([FromBody] CustomerSummary customerSummary)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            if (!storeRepository.DoesStoreExists(customerSummary.StoreID))
+            {
+                return BadRequest($"Store with id {customerSummary.StoreID} does not exists");
+            }
+            if (!userRepository.DoesUserExists(customerSummary.UserID))
+            {
+                return BadRequest($"User with id {customerSummary.UserID} does not exists");
+            }
+            return Ok(customerService.CreateCustomer(customerSummary));
+        }
+
+        [HttpPut, Route("{customerId}")]
+        public IHttpActionResult UpdateCustomer([FromUri] int customerId, [FromBody] CustomerSummary customerSummary)
+        {
+            try
+            {
+                //Does customer belongs to the store
+                //Is user valid
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+                if (!storeRepository.DoesStoreExists(customerSummary.StoreID))
+                {
+                    return BadRequest($"Store with id {customerSummary.StoreID} does not exists");
+                }
+                if (!userRepository.DoesUserExists(customerSummary.UserID))
+                {
+                    return BadRequest($"User with id {customerSummary.UserID} does not exists");
+                }
+                return Ok(customerService.EditCustomer(customerSummary, customerId));
+            }
+            catch (InvalidOperationException)
+            {
+                return BadRequest($"Customer with id {customerId} does not exists");
+            }
+        }
+
+        [HttpDelete, Route("{customerId}")]
+        public IHttpActionResult DeleteCustomer(int customerId)
+        {
+            try
+            {
+                customerService.RemoveCustomer(customerId);
+                return Ok("Successfully removed");
+            }
+            catch (InvalidOperationException)
+            {
+                return BadRequest($"Customer with id {customerId} does not exists");
+            }
+        }
+
+        [HttpGet, Route("{storeId}/storecustomers")]
+        public IHttpActionResult GetCustomersByStoreId(int storeId)
+        {
+            try
+            {
+                return Ok(customerService.GetStoreCustomers(storeId));
+            }
+            catch (InvalidOperationException)
+            {
+                return BadRequest($"Store with id {storeId} does not exists");
+            }
+        }
+
+        [HttpGet, Route("{userId}/usercustomers")]
+        public IHttpActionResult GetCustomersByUserId(int userId)
+        {
+            try
+            {
+                return Ok(customerService.GetUserCustomers(userId));
+            }
+            catch (InvalidOperationException)
+            {
+                return BadRequest($"Store with id {userId} does not exists");
+            }
+        }
     }
 }

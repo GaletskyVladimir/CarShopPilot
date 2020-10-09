@@ -22,5 +22,7 @@ namespace ApplicationServices.Interfaces
         bool UpdateActivity(int userId, bool isActive);
 
         IEnumerable<User> GetStoreUsers(int storeId);
+
+        bool DoesUserExists(int userId);
     }
 }

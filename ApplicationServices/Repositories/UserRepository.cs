@@ -56,5 +56,10 @@ namespace ApplicationServices.Repositories
         {
             return UserContainer.GetStoreUsers(storeId);
         }
+
+        public bool DoesUserExists(int userId)
+        {
+            return UserContainer.DoesUserExists(userId);
+        }
     }
 }

@@ -61,6 +61,11 @@ namespace ApplicationServices.Containers
             return users.Where(x => x.StoreID == storeId);
         }
 
+        public static bool DoesUserExists(int userId)
+        {
+            return users.Any(x => x.ID == userId);
+        }
+
         private static void initUsers()
         {
             users = new List<User>();
