@@ -1,4 +1,5 @@
 ﻿using ApplicationServices.Interfaces;
+using ApplicationServices.IServices;
 using ApplicationServices.Models;
 using DomainModels;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationServices.Services
 {
-    public class StoreService
+    public class StoreService : IStoreService
     {
         private readonly IStoreRepository storeRepository;
 

@@ -1,4 +1,5 @@
 ﻿using ApplicationServices.Interfaces;
+using ApplicationServices.IServices;
 using ApplicationServices.Models;
 using ApplicationServices.Services;
 using System;
@@ -13,13 +14,13 @@ namespace CarShopPilot.Controllers
     [RoutePrefix("api/vehicles")]
     public class VehiclesController : ApiController
     {
-        private readonly VehicleService vehicleService;
+        private readonly IVehicleService vehicleService;
 
         private readonly IStoreRepository storeRepository;
 
-        public VehiclesController(IVehicleRepository vehicleRepository, IStoreRepository storeRepository)
+        public VehiclesController(IVehicleService vehicleService, IStoreRepository storeRepository)
         {
-            this.vehicleService = new VehicleService(vehicleRepository);
+            this.vehicleService = vehicleService;
             this.storeRepository = storeRepository;
         }
 

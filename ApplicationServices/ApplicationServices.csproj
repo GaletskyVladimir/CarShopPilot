@@ -89,6 +89,11 @@
     <Compile Include="Interfaces\IStoreRepository.cs" />
     <Compile Include="Interfaces\IUserRepository.cs" />
     <Compile Include="Interfaces\IVehicleRepository.cs" />
+    <Compile Include="IServices\ICustomerService.cs" />
+    <Compile Include="IServices\IDealService.cs" />
+    <Compile Include="IServices\IStoreService.cs" />
+    <Compile Include="IServices\IUserService.cs" />
+    <Compile Include="IServices\IVehicleService.cs" />
     <Compile Include="Models\CustomerSummary.cs" />
     <Compile Include="Models\DealSummary.cs" />
     <Compile Include="Models\StoreSummary.cs" />

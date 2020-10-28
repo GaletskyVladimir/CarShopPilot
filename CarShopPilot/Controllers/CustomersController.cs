@@ -1,4 +1,5 @@
 ﻿using ApplicationServices.Interfaces;
+using ApplicationServices.IServices;
 using ApplicationServices.Models;
 using ApplicationServices.Services;
 using System;
@@ -13,17 +14,17 @@ namespace CarShopPilot.Controllers
     [RoutePrefix("api/customers")]
     public class CustomersController : ApiController
     {
-        private readonly CustomerService customerService;
+        private readonly ICustomerService customerService;
 
-        private readonly StoreService storeService;
+        private readonly IStoreService storeService;
 
-        private readonly UserService userSerivce;
+        private readonly IUserService userSerivce;
 
-        public CustomersController(ICustomerRepository customerRepo, IStoreRepository storeRepository, IUserRepository userRepository)
+        public CustomersController(ICustomerService customerService, IStoreService storeService, IUserService userSerivce)
         {
-            this.customerService = new CustomerService(customerRepo);
-            this.storeService = new StoreService(storeRepository);
-            this.userSerivce = new UserService(userRepository);
+            this.customerService = customerService;
+            this.storeService = storeService;
+            this.userSerivce = userSerivce;
         }
 
         //Count

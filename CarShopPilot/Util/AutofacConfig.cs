@@ -1,5 +1,7 @@
 ﻿using ApplicationServices.Interfaces;
+using ApplicationServices.IServices;
 using ApplicationServices.Repositories;
+using ApplicationServices.Services;
 using Autofac;
 using Autofac.Integration.WebApi;
 using System;
@@ -48,6 +50,26 @@ namespace CarShopPilot.Util
 
             builder.RegisterType<StoreRepository>()
                    .As<IStoreRepository>()
+                   .InstancePerRequest();
+
+            builder.RegisterType<UserService>()
+                   .As<IUserService>()
+                   .InstancePerRequest();
+
+            builder.RegisterType<DealService>()
+                   .As<IDealService>()
+                   .InstancePerRequest();
+
+            builder.RegisterType<CustomerService>()
+                   .As<ICustomerService>()
+                   .InstancePerRequest();
+
+            builder.RegisterType<StoreService>()
+                   .As<IStoreService>()
+                   .InstancePerRequest();
+
+            builder.RegisterType<VehicleService>()
+                   .As<IVehicleService>()
                    .InstancePerRequest();
 
             Container = builder.Build();

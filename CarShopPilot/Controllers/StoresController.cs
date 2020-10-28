@@ -1,4 +1,5 @@
 ﻿using ApplicationServices.Interfaces;
+using ApplicationServices.IServices;
 using ApplicationServices.Models;
 using ApplicationServices.Services;
 using System;
@@ -13,11 +14,11 @@ namespace CarShopPilot.Controllers
     [RoutePrefix("api/stores")]
     public class StoresController : ApiController
     {
-        private readonly StoreService storeService;
+        private readonly IStoreService storeService;
 
-        public StoresController(IStoreRepository storeRepository)
+        public StoresController(IStoreService storeService)
         {
-            storeService = new StoreService(storeRepository);
+            this.storeService = storeService;
         }
 
         [HttpGet, Route("")]

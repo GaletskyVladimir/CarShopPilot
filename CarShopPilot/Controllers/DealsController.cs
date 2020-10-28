@@ -1,4 +1,5 @@
 ﻿using ApplicationServices.Interfaces;
+using ApplicationServices.IServices;
 using ApplicationServices.Models;
 using ApplicationServices.Services;
 using DomainModels;
@@ -14,20 +15,15 @@ namespace CarShopPilot.Controllers
     [RoutePrefix("api/deals")]
     public class DealsController : ApiController
     {
-        private readonly CustomerService customerService;
 
-        private readonly StoreService storeService;
+        private readonly IUserService userSerivce;
 
-        private readonly UserService userSerivce;
+        private readonly IDealService dealService;
 
-        private readonly DealService dealService;
-
-        public DealsController(IDealRepository dealRepo, ICustomerRepository customerRepo, IStoreRepository storeRepository, IUserRepository userRepository)
+        public DealsController(IDealService dealService, IUserService userSerivce)
         {
-            this.dealService = new DealService(dealRepo);
-            this.customerService = new CustomerService(customerRepo);
-            this.storeService = new StoreService(storeRepository);
-            this.userSerivce = new UserService(userRepository);
+            this.dealService = dealService;
+            this.userSerivce = userSerivce;
         }
 
         [HttpGet, Route("")]
