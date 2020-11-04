@@ -1,9 +1,11 @@
-﻿using CarShopPilot.Filters;
+﻿using CarShopPilot.Factory;
+using CarShopPilot.Filters;
 using CarShopPilot.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.ValueProviders;
 
 namespace CarShopPilot
 {
@@ -12,6 +14,7 @@ namespace CarShopPilot
         public static void Register(HttpConfiguration config)
         {
             Bootstrapper.Run();
+            config.Services.Add(typeof(ValueProviderFactory), new HeaderValueProviderFactory());
             config.MapHttpAttributeRoutes();
             config.Filters.Add(new LogExceptionFilterAttribute());
             config.Filters.Add(new LogWebRequestsAttribute());

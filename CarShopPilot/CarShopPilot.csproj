@@ -152,17 +152,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Attributes\FromHeaderAttribute .cs" />
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\DealsController.cs" />
     <Compile Include="Controllers\StoresController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\VehiclesController.cs" />
+    <Compile Include="Factory\HeaderValueProviderFactory.cs" />
     <Compile Include="Filters\LogExceptionFilterAttribute.cs" />
     <Compile Include="Filters\LogWebRequestsAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\HeaderValueProvider.cs" />
     <Compile Include="Util\AutofacConfig.cs" />
     <Compile Include="Util\Bootstrapper.cs" />
   </ItemGroup>
@@ -194,6 +197,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

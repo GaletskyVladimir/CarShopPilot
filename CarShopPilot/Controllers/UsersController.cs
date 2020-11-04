@@ -2,6 +2,7 @@
 using ApplicationServices.IServices;
 using ApplicationServices.Models;
 using ApplicationServices.Services;
+using CarShopPilot.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace CarShopPilot.Controllers
         }
 
         [HttpGet, Route("")]
-        public IHttpActionResult GetUsers() 
+        public IHttpActionResult GetUsers([FromHeader(Name = "TestId")] int testId) 
         {
             return Ok(userService.GetAllUsers());
         }
