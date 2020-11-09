@@ -40,7 +40,10 @@ namespace CarShopPilot.Controllers
             }
             catch (InvalidOperationException)
             {
-                return BadRequest($"User with id {userId} does not exists");
+                var message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                message.Content = new StringContent("User not found");
+                var exception = new HttpResponseException(message);
+                throw exception;
             }
         }
 
