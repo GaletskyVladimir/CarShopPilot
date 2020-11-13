@@ -3,11 +3,13 @@ using ApplicationServices.IServices;
 using ApplicationServices.Models;
 using ApplicationServices.Services;
 using CarShopPilot.Attributes;
+using CarShopPilot.Errors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Web.Http;
 
 namespace CarShopPilot.Controllers
@@ -40,10 +42,8 @@ namespace CarShopPilot.Controllers
             }
             catch (InvalidOperationException)
             {
-                var message = new HttpResponseMessage(HttpStatusCode.BadRequest);
-                message.Content = new StringContent("User not found");
-                var exception = new HttpResponseException(message);
-                throw exception;
+                var errorMessage = new ErrorMessage() { Code = HttpStatusCode.NotFound, Message = $"User with id {userId} not found" };
+                return ResponseMessage(errorMessage.GetError());
             }
         }
 
@@ -51,10 +51,11 @@ namespace CarShopPilot.Controllers
 		public IHttpActionResult CreateUser([FromBody]UserSummary userSummary)
 		{
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState));
             if (!storeService.DoesStoreExists(userSummary.StoreID))
             {
-                return BadRequest($"Store with id {userSummary.StoreID} does not exists");
+                var errorMessage = new ErrorMessage() { Code = HttpStatusCode.NotFound, Message = $"Store with id {userSummary.StoreID} does not exists" };
+                return ResponseMessage(errorMessage.GetError());
             }
             return Ok(userService.CreateUser(userSummary));
 		}
@@ -65,16 +66,18 @@ namespace CarShopPilot.Controllers
             try
             {
                 if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState));
                 if (!storeService.DoesStoreExists(userSummary.StoreID))
                 {
-                    return BadRequest($"Store with id {userSummary.StoreID} does not exists");
+                    var errorMessage = new ErrorMessage() { Code = HttpStatusCode.NotFound, Message = $"Store with id {userSummary.StoreID} does not exists" };
+                    return ResponseMessage(errorMessage.GetError());
                 }
                 return Ok(userService.EditUser(userSummary, userId));
             }
             catch (InvalidOperationException)
             {
-                return BadRequest($"User with id {userId} does not exists");
+                var errorMessage = new ErrorMessage() { Code = HttpStatusCode.NotFound, Message = $"User with id {userId} not found" };
+                return ResponseMessage(errorMessage.GetError());
             }
         }
 
@@ -88,7 +91,8 @@ namespace CarShopPilot.Controllers
             }
             catch (InvalidOperationException)
             {
-                return BadRequest($"User with id {userId} does not exists");
+                var errorMessage = new ErrorMessage() { Code = HttpStatusCode.NotFound, Message = $"User with id {userId} not found" };
+                return ResponseMessage(errorMessage.GetError());
             }
         }
 
@@ -101,7 +105,8 @@ namespace CarShopPilot.Controllers
             }
             catch (InvalidOperationException)
             {
-                return BadRequest($"User with id {userId} does not exists");
+                var errorMessage = new ErrorMessage() { Code = HttpStatusCode.NotFound, Message = $"User with id {userId} not found" };
+                return ResponseMessage(errorMessage.GetError());
             }
         }
 
@@ -114,7 +119,8 @@ namespace CarShopPilot.Controllers
             }
             catch (InvalidOperationException)
             {
-                return BadRequest($"Store with id {storeId} does not exists");
+                var errorMessage = new ErrorMessage() { Code = HttpStatusCode.NotFound, Message = $"Store with id {storeId} does not exists" };
+                return ResponseMessage(errorMessage.GetError());
             }
         }
     }
