@@ -1,15 +1,10 @@
-﻿using ApplicationServices.Interfaces;
-using ApplicationServices.IServices;
+﻿using ApplicationServices.IServices;
 using ApplicationServices.Models;
-using ApplicationServices.Services;
 using CarShopPilot.Attributes;
 using CarShopPilot.Errors;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Json;
 using System.Web.Http;
 
 namespace CarShopPilot.Controllers
@@ -51,7 +46,10 @@ namespace CarShopPilot.Controllers
 		public IHttpActionResult CreateUser([FromBody]UserSummary userSummary)
 		{
             if (!ModelState.IsValid)
-                return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState));
+            {
+                var errorMessage = new ErrorMessage(HttpStatusCode.BadRequest, "Errors in User data", ModelState);
+                return ResponseMessage(errorMessage.GetError());
+            }    
             if (!storeService.DoesStoreExists(userSummary.StoreID))
             {
                 var errorMessage = new ErrorMessage() { Code = HttpStatusCode.NotFound, Message = $"Store with id {userSummary.StoreID} does not exists" };
@@ -66,7 +64,10 @@ namespace CarShopPilot.Controllers
             try
             {
                 if (!ModelState.IsValid)
-                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState));
+                {
+                    var errorMessage = new ErrorMessage(HttpStatusCode.BadRequest, "Errors in User data", ModelState);
+                    return ResponseMessage(errorMessage.GetError());
+                }
                 if (!storeService.DoesStoreExists(userSummary.StoreID))
                 {
                     var errorMessage = new ErrorMessage() { Code = HttpStatusCode.NotFound, Message = $"Store with id {userSummary.StoreID} does not exists" };
