@@ -37,7 +37,7 @@ namespace CarShopPilot.Controllers
             }
             catch (InvalidOperationException)
             {
-                var errorMessage = new ErrorMessage() { Code = HttpStatusCode.NotFound, Message = $"User with id {userId} not found" };
+                var errorMessage = new ErrorMessage() { HttpCode = HttpStatusCode.NotFound, ErrorCode = ErrorCode.UserNotFound, Message = $"User with id {userId} not found" };
                 return ResponseMessage(errorMessage.GetError());
             }
         }
@@ -47,12 +47,12 @@ namespace CarShopPilot.Controllers
 		{
             if (!ModelState.IsValid)
             {
-                var errorMessage = new ErrorMessage(HttpStatusCode.BadRequest, "Errors in User data", ModelState);
+                var errorMessage = new ErrorMessage(HttpStatusCode.BadRequest, ErrorCode.BadArgument, "Errors in User data", ModelState);
                 return ResponseMessage(errorMessage.GetError());
             }    
             if (!storeService.DoesStoreExists(userSummary.StoreID))
             {
-                var errorMessage = new ErrorMessage() { Code = HttpStatusCode.NotFound, Message = $"Store with id {userSummary.StoreID} does not exists" };
+                var errorMessage = new ErrorMessage() { HttpCode = HttpStatusCode.NotFound, ErrorCode = ErrorCode.StoreNotFound, Message = $"Store with id {userSummary.StoreID} does not exists" };
                 return ResponseMessage(errorMessage.GetError());
             }
             return Ok(userService.CreateUser(userSummary));
@@ -65,19 +65,19 @@ namespace CarShopPilot.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    var errorMessage = new ErrorMessage(HttpStatusCode.BadRequest, "Errors in User data", ModelState);
+                    var errorMessage = new ErrorMessage(HttpStatusCode.BadRequest, ErrorCode.BadArgument, "Errors in User data", ModelState);
                     return ResponseMessage(errorMessage.GetError());
                 }
                 if (!storeService.DoesStoreExists(userSummary.StoreID))
                 {
-                    var errorMessage = new ErrorMessage() { Code = HttpStatusCode.NotFound, Message = $"Store with id {userSummary.StoreID} does not exists" };
+                    var errorMessage = new ErrorMessage() { ErrorCode = ErrorCode.StoreNotFound, Message = $"Store with id {userSummary.StoreID} does not exists" };
                     return ResponseMessage(errorMessage.GetError());
                 }
                 return Ok(userService.EditUser(userSummary, userId));
             }
             catch (InvalidOperationException)
             {
-                var errorMessage = new ErrorMessage() { Code = HttpStatusCode.NotFound, Message = $"User with id {userId} not found" };
+                var errorMessage = new ErrorMessage() { HttpCode = HttpStatusCode.NotFound, ErrorCode = ErrorCode.UserNotFound, Message = $"User with id {userId} not found" };
                 return ResponseMessage(errorMessage.GetError());
             }
         }
@@ -92,7 +92,7 @@ namespace CarShopPilot.Controllers
             }
             catch (InvalidOperationException)
             {
-                var errorMessage = new ErrorMessage() { Code = HttpStatusCode.NotFound, Message = $"User with id {userId} not found" };
+                var errorMessage = new ErrorMessage() { HttpCode = HttpStatusCode.NotFound, ErrorCode = ErrorCode.UserNotFound, Message = $"User with id {userId} not found" };
                 return ResponseMessage(errorMessage.GetError());
             }
         }
@@ -106,7 +106,7 @@ namespace CarShopPilot.Controllers
             }
             catch (InvalidOperationException)
             {
-                var errorMessage = new ErrorMessage() { Code = HttpStatusCode.NotFound, Message = $"User with id {userId} not found" };
+                var errorMessage = new ErrorMessage() { HttpCode = HttpStatusCode.NotFound, ErrorCode = ErrorCode.UserNotFound, Message = $"User with id {userId} not found" };
                 return ResponseMessage(errorMessage.GetError());
             }
         }
@@ -120,7 +120,7 @@ namespace CarShopPilot.Controllers
             }
             catch (InvalidOperationException)
             {
-                var errorMessage = new ErrorMessage() { Code = HttpStatusCode.NotFound, Message = $"Store with id {storeId} does not exists" };
+                var errorMessage = new ErrorMessage() { HttpCode = HttpStatusCode.NotFound, ErrorCode = ErrorCode.UserNotFound, Message = $"Store with id {storeId} does not exists" };
                 return ResponseMessage(errorMessage.GetError());
             }
         }

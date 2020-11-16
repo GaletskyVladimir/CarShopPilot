@@ -173,6 +173,7 @@
     <Compile Include="Controllers\StoresController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\VehiclesController.cs" />
+    <Compile Include="Errors\ErrorCode.cs" />
     <Compile Include="Errors\ErrorMessage.cs" />
     <Compile Include="Factory\HeaderValueProviderFactory.cs" />
     <Compile Include="Filters\LogExceptionFilterAttribute.cs" />

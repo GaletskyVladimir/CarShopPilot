@@ -24,7 +24,7 @@ namespace CarShopPilot.Filters
                 exceptionMessage = actionExecutedContext.Exception.InnerException.Message;
             }
 
-            var errorMessage = new ErrorMessage() { Code = HttpStatusCode.InternalServerError, Message = $"An unhandled exception was thrown by service. {exceptionMessage}" };
+            var errorMessage = new ErrorMessage() { HttpCode = HttpStatusCode.InternalServerError, ErrorCode = ErrorCode.UnHandled, Message = $"An unhandled exception was thrown by service. {exceptionMessage}" };
             actionExecutedContext.Response = errorMessage.GetError();
         }
     }

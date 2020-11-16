@@ -16,14 +16,17 @@ namespace CarShopPilot.Errors
 
         }
 
-        public ErrorMessage(HttpStatusCode code, string message, ModelStateDictionary modelState)
+        public ErrorMessage(HttpStatusCode httpCode, ErrorCode errorCode, string message, ModelStateDictionary modelState)
         {
-            this.Code = code;
+            this.HttpCode = httpCode;
             this.Message = message;
             this.ModelState = modelState;
+            this.ErrorCode = errorCode;
         }
 
-        public HttpStatusCode Code { get; set; }
+        public HttpStatusCode HttpCode { get; set; }
+
+        public ErrorCode ErrorCode { get; set; }
 
         public string Message { get; set; }
 
@@ -31,7 +34,7 @@ namespace CarShopPilot.Errors
 
         public HttpResponseMessage GetError()
         {
-            var message = new HttpResponseMessage(this.Code);
+            var message = new HttpResponseMessage(this.HttpCode);
 
             if (this.ModelState != null)
             {
@@ -39,7 +42,7 @@ namespace CarShopPilot.Errors
                 {
                     Error = new
                     {
-                        Code = this.Code.ToString(),
+                        Code = this.ErrorCode.ToString(),
                         Message = this.Message,
                         ValidationDetails = this.ModelState
                     }
@@ -51,7 +54,7 @@ namespace CarShopPilot.Errors
                 { 
                     Error = new
                     {
-                        Code = this.Code.ToString(),
+                        Code = this.ErrorCode.ToString(),
                         Message = this.Message
                     }
                 });
