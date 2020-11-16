@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CarShopPilot.Errors;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -11,13 +12,20 @@ namespace CarShopPilot.Filters
 {
     public class LogExceptionFilterAttribute : ExceptionFilterAttribute
     {
-        public override void OnException(HttpActionExecutedContext context)
+        public override void OnException(HttpActionExecutedContext actionExecutedContext)
         {
-            var ex = context.Exception;
-            //todo log ex
-            context.Response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
-            context.Response.StatusCode = HttpStatusCode.InternalServerError;
-            context.Response.ReasonPhrase = "The request was invalid for the server";
+            string exceptionMessage = string.Empty;
+            if (actionExecutedContext.Exception.InnerException == null)
+            {
+                exceptionMessage = actionExecutedContext.Exception.Message;
+            }
+            else
+            {
+                exceptionMessage = actionExecutedContext.Exception.InnerException.Message;
+            }
+
+            var errorMessage = new ErrorMessage() { Code = HttpStatusCode.InternalServerError, Message = $"An unhandled exception was thrown by service. {exceptionMessage}" };
+            actionExecutedContext.Response = errorMessage.GetError();
         }
     }
 }
