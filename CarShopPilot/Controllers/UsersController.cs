@@ -90,7 +90,7 @@ namespace CarShopPilot.Controllers
             catch (InvalidOperationException)
             {
                 var errorMessage = new ErrorMessage() { HttpCode = HttpStatusCode.NotFound, ErrorCode = ErrorCode.UserNotFound, Message = $"User with id {userId} not found" };
-                logger.LogWarning($"User with id `{userId}` was not updated. Reason: invalid User data, {errorMessage.GetError()}");
+                logger.LogWarning($"User with id `{userId}` was not updated. Reason: user was not found in database.");
                 return ResponseMessage(errorMessage.GetError());
             }
         }
