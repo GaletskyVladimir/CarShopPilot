@@ -93,6 +93,11 @@ namespace CarShopPilot.Controllers
                 logger.LogWarning($"User with id `{userId}` was not updated. Reason: user was not found in database.");
                 return ResponseMessage(errorMessage.GetError());
             }
+            catch (Exception ex)
+            {
+                logger.LogError($"Error happend during user update", ex);
+                return InternalServerError();
+            }
         }
 
         [HttpDelete, Route("{userId}")]
