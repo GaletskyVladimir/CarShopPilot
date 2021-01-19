@@ -44,7 +44,7 @@ namespace CarShopPilot.Errors
                     {
                         Code = this.ErrorCode.ToString(),
                         Message = this.Message,
-                        ValidationDetails = this.ModelState
+                        //ValidationDetails = this.ModelState.Values.ToList() smth wrong with model state
                     }
                 });
             }

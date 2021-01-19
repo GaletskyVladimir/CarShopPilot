@@ -1,6 +1,7 @@
 ﻿using CarShopPilot.Factory;
 using CarShopPilot.Filters;
 using CarShopPilot.Util;
+using Common.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace CarShopPilot
             Bootstrapper.Run();
             config.Services.Add(typeof(ValueProviderFactory), new HeaderValueProviderFactory());
             config.MapHttpAttributeRoutes();
-            config.Filters.Add(new LogExceptionFilterAttribute());
+            config.Filters.Add(new LogExceptionFilterAttribute(new Logger<LogExceptionFilterAttribute>()));
             config.Filters.Add(new LogWebRequestsAttribute());
 
             config.Routes.MapHttpRoute(

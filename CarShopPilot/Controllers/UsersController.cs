@@ -2,6 +2,7 @@
 using ApplicationServices.Models;
 using CarShopPilot.Attributes;
 using CarShopPilot.Errors;
+using Common.Logging;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -16,10 +17,13 @@ namespace CarShopPilot.Controllers
 
         private readonly IStoreService storeService;
 
-        public UsersController(IUserService userService, IStoreService storeService)
+        private readonly ILogger<UsersController> logger;
+
+        public UsersController(IUserService userService, IStoreService storeService, ILogger<UsersController> logger)
         {
             this.userService = userService;
             this.storeService = storeService;
+            this.logger = logger;
         }
 
         [HttpGet, Route("")]
@@ -63,21 +67,30 @@ namespace CarShopPilot.Controllers
         {
             try
             {
+                logger.LogDebug($"User Data Update for user with ID: {userId}");
                 if (!ModelState.IsValid)
                 {
+                    //throw new ArgumentException("5");
                     var errorMessage = new ErrorMessage(HttpStatusCode.BadRequest, ErrorCode.BadArgument, "Errors in User data", ModelState);
+                    logger.LogWarning($"User with id `{userId}` was not updated. Reason: invalid User data.");
                     return ResponseMessage(errorMessage.GetError());
                 }
                 if (!storeService.DoesStoreExists(userSummary.StoreID))
                 {
                     var errorMessage = new ErrorMessage() { ErrorCode = ErrorCode.StoreNotFound, Message = $"Store with id {userSummary.StoreID} does not exists" };
+                    logger.LogWarning($"User data for user with id `{userId}` was not updated. Reason: invalid Store ID: `userSummary.StoreID`, does not exists");
                     return ResponseMessage(errorMessage.GetError());
                 }
-                return Ok(userService.EditUser(userSummary, userId));
+                else
+                {
+                    logger.LogInfo($"User with id `{userId}` was successfully updated");
+                    return Ok(userService.EditUser(userSummary, userId));
+                }
             }
             catch (InvalidOperationException)
             {
                 var errorMessage = new ErrorMessage() { HttpCode = HttpStatusCode.NotFound, ErrorCode = ErrorCode.UserNotFound, Message = $"User with id {userId} not found" };
+                logger.LogWarning($"User with id `{userId}` was not updated. Reason: invalid User data, {errorMessage.GetError()}");
                 return ResponseMessage(errorMessage.GetError());
             }
         }

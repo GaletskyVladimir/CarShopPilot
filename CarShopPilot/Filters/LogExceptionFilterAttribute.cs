@@ -1,4 +1,5 @@
 ﻿using CarShopPilot.Errors;
+using Common.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +13,17 @@ namespace CarShopPilot.Filters
 {
     public class LogExceptionFilterAttribute : ExceptionFilterAttribute
     {
+        private readonly ILogger<LogExceptionFilterAttribute> logger;
+
+        public LogExceptionFilterAttribute(Logger<LogExceptionFilterAttribute> logger)
+        {
+            this.logger = logger;
+        }
+
         public override void OnException(HttpActionExecutedContext actionExecutedContext)
         {
             string exceptionMessage = string.Empty;
+            logger.LogError("Exception was handled in Exception filter.", actionExecutedContext.Exception);
             if (actionExecutedContext.Exception.InnerException == null)
             {
                 exceptionMessage = actionExecutedContext.Exception.Message;

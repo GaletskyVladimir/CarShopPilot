@@ -4,6 +4,7 @@ using ApplicationServices.Repositories;
 using ApplicationServices.Services;
 using Autofac;
 using Autofac.Integration.WebApi;
+using Common.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,6 +72,9 @@ namespace CarShopPilot.Util
             builder.RegisterType<VehicleService>()
                    .As<IVehicleService>()
                    .InstancePerRequest();
+
+            builder.RegisterGeneric(typeof(Logger<>))
+                .As(typeof(ILogger<>));
 
             Container = builder.Build();
 
