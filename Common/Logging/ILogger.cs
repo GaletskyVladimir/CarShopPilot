@@ -16,7 +16,7 @@ namespace Common.Logging
 
         void LogInfo(string message);
 
-        void LogInfo(string message, params object[] parameters)
+        void LogInfo(string message, params object[] parameters);
 
         void LogWarning(string message);
 
