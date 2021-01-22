@@ -25,15 +25,30 @@ namespace Common.Logging
         {
             logger.Debug(message);
         }
+        
+        public void LogDebug(string message, params object[] parameters)
+        {
+            logger.Debug(message, parameters);
+        }
 
         public void LogInfo(string message)
         {
             logger.Info(message);
         }
 
+        public void LogInfo(string message, params object[] parameters)
+        {
+            logger.Info(message, parameters);
+        }
+
         public void LogWarning(string message)
         {
             logger.Warn(message);
+        }
+
+        public void LogWarning(string message, params object[] parameters)
+        {
+            logger.Warn(message, parameters);
         }
 
         public void LogError(string message, Exception exception)

@@ -4,6 +4,8 @@ using CarShopPilot.Attributes;
 using CarShopPilot.Errors;
 using Common.Logging;
 using System;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -47,7 +49,7 @@ namespace CarShopPilot.Controllers
         }
 
 		[HttpPost, Route("")]
-		public IHttpActionResult CreateUser([FromBody]UserSummary userSummary)
+        public IHttpActionResult CreateUser([FromBody]UserSummary userSummary)
 		{
             if (!ModelState.IsValid)
             {
@@ -67,30 +69,30 @@ namespace CarShopPilot.Controllers
         {
             try
             {
-                logger.LogDebug($"User Data Update for user with ID: {userId}");
+                logger.LogDebug("User Data Update for user with ID: {0}", userId);
                 if (!ModelState.IsValid)
                 {
-                    //throw new ArgumentException("5");
                     var errorMessage = new ErrorMessage(HttpStatusCode.BadRequest, ErrorCode.BadArgument, "Errors in User data", ModelState);
-                    logger.LogWarning($"User with id `{userId}` was not updated. Reason: invalid User data.");
+                    var stateErrors = errorMessage.GetStateErrors();
+                    logger.LogWarning("User with id `{0}` was not updated. Reason: invalid User data. ({1})", userId, stateErrors);
                     return ResponseMessage(errorMessage.GetError());
                 }
                 if (!storeService.DoesStoreExists(userSummary.StoreID))
                 {
                     var errorMessage = new ErrorMessage() { ErrorCode = ErrorCode.StoreNotFound, Message = $"Store with id {userSummary.StoreID} does not exists" };
-                    logger.LogWarning($"User data for user with id `{userId}` was not updated. Reason: invalid Store ID: `userSummary.StoreID`, does not exists");
+                    logger.LogWarning("User data for user with id `{0}` was not updated. Reason: invalid Store ID: `{1}`, does not exists", userId, userSummary.StoreID);
                     return ResponseMessage(errorMessage.GetError());
                 }
                 else
                 {
-                    logger.LogInfo($"User with id `{userId}` was successfully updated");
+                    logger.LogInfo("User with id `{0}` was successfully updated", userId);
                     return Ok(userService.EditUser(userSummary, userId));
                 }
             }
             catch (InvalidOperationException)
             {
                 var errorMessage = new ErrorMessage() { HttpCode = HttpStatusCode.NotFound, ErrorCode = ErrorCode.UserNotFound, Message = $"User with id {userId} not found" };
-                logger.LogWarning($"User with id `{userId}` was not updated. Reason: user was not found in database.");
+                logger.LogWarning("User with id `{0}` was not updated. Reason: user was not found in database.", userId);
                 return ResponseMessage(errorMessage.GetError());
             }
             catch (Exception ex)

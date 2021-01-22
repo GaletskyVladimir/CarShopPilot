@@ -12,9 +12,15 @@ namespace Common.Logging
 
         void LogDebug(string message);
 
+        void LogDebug(string message, params object[] parameters);
+
         void LogInfo(string message);
 
+        void LogInfo(string message, params object[] parameters)
+
         void LogWarning(string message);
+
+        void LogWarning(string message, params object[] parameters);
 
         void LogError(string message, Exception exception);
 

@@ -32,6 +32,21 @@ namespace CarShopPilot.Errors
 
         public ModelStateDictionary ModelState { get; set; }
 
+        public string GetStateErrors()
+        {
+            var finalString = string.Empty;
+
+            foreach(var state in this.ModelState.Values)
+            {
+                if (state.Errors.Count == 1)
+                {
+                    finalString += state.Errors.First().ErrorMessage + " ";
+                }
+            }
+
+            return finalString;
+        }
+
         public HttpResponseMessage GetError()
         {
             var message = new HttpResponseMessage(this.HttpCode);
